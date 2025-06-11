@@ -1,4 +1,4 @@
-const API_URL = "https://https://msrp.onrender.com/students"; // We'll update this URL later
+const API_URL = "https://msrp.onrender.com/students"; // We'll update this URL later
 
 // Elements
 const studentForm = document.getElementById("student-form");
@@ -18,14 +18,21 @@ function fetchStudents() {
       data.forEach((student) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${student.id}</td>
-          <td>${student.name}</td>
-          <td>${student.level}</td>
-          <td>
-            <button onclick="editStudent(${student.id}, '${student.name}', '${student.level}')">Edit</button>
-            <button onclick="deleteStudent(${student.id})">Delete</button>
-          </td>
-        `;
+    <td>${student.id}</td>
+    <td>${student.name}</td>
+    <td>${student.level}</td>
+    <td>
+      <button class="edit-btn">Edit</button>
+      <button class="delete-btn">Delete</button>
+    </td>
+  `;
+        // Add event listeners
+        tr.querySelector(".edit-btn").addEventListener("click", () => {
+          editStudent(student.id, student.name, student.level);
+        });
+        tr.querySelector(".delete-btn").addEventListener("click", () => {
+          deleteStudent(student.id);
+        });
         studentsBody.appendChild(tr);
       });
     })

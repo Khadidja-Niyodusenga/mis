@@ -1,3 +1,6 @@
 {
-  "students": []
+  "students": [
+    { "id": 1, "name": "Alice", "level": "100" },
+    { "id": 2, "name": "Bob", "level": "200" }
+  ]
 }

@@ -13,22 +13,28 @@
 //   console.log(`Server is running on port ${PORT}`);
 // });
 const express = require("express");
+const cors = require("cors"); // 1. Require cors here
 const path = require("path");
 const app = express();
 
 const PORT = process.env.PORT || 10000;
 
-// Serve static files from the 'public' folder
+app.use(cors()); // 2. Use cors middleware here
+
+app.use(express.json()); // Also add this to parse JSON request bodies
+
+// Serve static files from the 'frontside' folder
 app.use(express.static(path.join(__dirname, "frontside")));
+
 let students = [];
 let currentId = 1;
 
-// Get all students
+// Your routes below...
+
 app.get("/students", (req, res) => {
   res.json(students);
 });
 
-// Create a new student
 app.post("/students", (req, res) => {
   const { name, level } = req.body;
   if (!name || !level) {
@@ -39,7 +45,6 @@ app.post("/students", (req, res) => {
   res.status(201).json(newStudent);
 });
 
-// Update a student
 app.put("/students/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const { name, level } = req.body;
@@ -52,7 +57,6 @@ app.put("/students/:id", (req, res) => {
   res.json(student);
 });
 
-// Delete a student
 app.delete("/students/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const index = students.findIndex((s) => s.id === id);
@@ -65,8 +69,6 @@ app.delete("/students/:id", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "frontside", "index.html"));
 });
-
-// Remove or comment out your old res.send message route if present
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
