@@ -15,12 +15,53 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+
 const PORT = process.env.PORT || 10000;
 
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, "frontside")));
+let students = [];
+let currentId = 1;
 
-// Serve index.html on root route
+// Get all students
+app.get("/students", (req, res) => {
+  res.json(students);
+});
+
+// Create a new student
+app.post("/students", (req, res) => {
+  const { name, level } = req.body;
+  if (!name || !level) {
+    return res.status(400).json({ error: "Name and level are required" });
+  }
+  const newStudent = { id: currentId++, name, level };
+  students.push(newStudent);
+  res.status(201).json(newStudent);
+});
+
+// Update a student
+app.put("/students/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const { name, level } = req.body;
+  const student = students.find((s) => s.id === id);
+  if (!student) return res.status(404).json({ error: "Student not found" });
+
+  if (name) student.name = name;
+  if (level) student.level = level;
+
+  res.json(student);
+});
+
+// Delete a student
+app.delete("/students/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = students.findIndex((s) => s.id === id);
+  if (index === -1) return res.status(404).json({ error: "Student not found" });
+
+  students.splice(index, 1);
+  res.status(204).end();
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "frontside", "index.html"));
 });

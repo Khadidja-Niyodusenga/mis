@@ -1,4 +1,4 @@
-const API_URL = "https://your-backend-api-url/students"; // We'll update this URL later
+const API_URL = "https://https://msrp.onrender.com/students"; // We'll update this URL later
 
 // Elements
 const studentForm = document.getElementById("student-form");
@@ -94,4 +94,3 @@ function resetForm() {
   studentNameInput.value = "";
   studentLevelInput.value = "";
 }
-                                                                                                                                                                                              
