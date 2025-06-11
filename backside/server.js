@@ -13,15 +13,20 @@
 //   console.log(`Server is running on port ${PORT}`);
 // });
 const express = require("express");
+const path = require("path");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-app.use(express.static("frontside")); // serves your frontend from 'public' folder
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, "public")));
 
+// Serve index.html on root route
 app.get("/", (req, res) => {
-  res.send("Backend is running!");
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// Remove or comment out your old res.send message route if present
+
 app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
